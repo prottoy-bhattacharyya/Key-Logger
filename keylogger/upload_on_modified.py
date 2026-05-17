@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEventHandler
 
 # --- CONFIGURATION ---
 FILE_PATH = "log.txt" 
-SERVER_URL = "http://192.168.1.138:5000/upload"  # Replace with your actual server IP
+SERVER_URL = "http://163.61.156.126:5000/upload"  # Replace with your actual server IP
 # ---------------------
 
 class LogFileHandler(FileSystemEventHandler):
