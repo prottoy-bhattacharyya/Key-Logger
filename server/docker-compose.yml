@@ -1,0 +1,11 @@
+services:
+  log-server:
+    build: .
+    container_name: log-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
