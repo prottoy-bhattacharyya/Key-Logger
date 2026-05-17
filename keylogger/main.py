@@ -6,7 +6,8 @@ import os
 # Get the directory where main.py is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Get the root directory (parent of keylogger folder)
-root_dir = os.path.dirname(script_dir)
+# root_dir = os.path.dirname(script_dir)
+root_dir = script_dir
 
 current_os = platform.system()
 
