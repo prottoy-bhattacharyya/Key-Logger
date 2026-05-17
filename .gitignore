@@ -1,2 +1,6 @@
 keylogger/.venv
 keylogger/log.txt
+
+server/.venv
+server/__pycache__/
+server/log.txt

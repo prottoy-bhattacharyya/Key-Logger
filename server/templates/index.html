@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Log Monitor</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00ff66;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .meta-panel {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        #status {
+            font-weight: bold;
+        }
+        .status-online { color: #00ff66; }
+        .status-offline { color: #ff3333; }
+        
+        #terminal {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 20px;
+            height: 550px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>System Log Monitor</h1>
+    <div class="meta-panel">
+        <div>Status: <span id="status" class="status-offline">Connecting...</span></div>
+        <div id="timestamp">Last sync: Never</div>
+    </div>
+    <div id="terminal">Loading streaming logs...</div>
+</div>
+
+<script>
+    const terminal = document.getElementById('terminal');
+    const statusEl = document.getElementById('status');
+    const timeEl = document.getElementById('timestamp');
+    let historicalContent = "";
+
+    async function updateLogs() {
+        try {
+            const res = await fetch('/api/log-content');
+            if (!res.ok) throw new Error("Server error");
+            
+            const data = await res.json();
+            
+            // Only update DOM if content actually shifted
+            if (data.content !== historicalContent) {
+                terminal.textContent = data.content;
+                historicalContent = data.content;
+                
+                // Keep view pinned to latest logs at the bottom
+                terminal.scrollTop = terminal.scrollHeight;
+                timeEl.textContent = `Last sync: ${new Date().toLocaleTimeString()}`;
+            }
+
+            statusEl.textContent = "Live Stream Connected";
+            statusEl.className = "status-online";
+
+        } catch (err) {
+            statusEl.textContent = "Disconnected from host";
+            statusEl.className = "status-offline";
+            console.error("Polling error:", err);
+        }
+    }
+
+    // Check for updates every 1000ms (1 second)
+    setInterval(updateLogs, 1000);
+    updateLogs(); // Run immediately on load
+</script>
+
+</body>
+</html>
